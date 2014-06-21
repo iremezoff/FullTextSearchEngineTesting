@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{37820B8B-9403-478F-8F2E-1C1AFCE398DC}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FullTextSearchEngineTesting</RootNamespace>
+    <AssemblyName>FullTextSearchEngineTesting</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dapper">
+      <HintPath>..\packages\Dapper.1.25\lib\net45\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net">
+      <HintPath>..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data">
+      <HintPath>..\packages\MySql.Data.6.5.4\lib\net40\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Nest">
+      <HintPath>..\packages\NEST.0.12.0.0\lib\NET4\Nest.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="InfoData\CaseResult.cs" />
+    <Compile Include="Cases\ManyTimesDifferentRandomQueries\ManyTimesDifferentRandomQueriesTestCase.cs" />
+    <Compile Include="Cases\ManyDifferentFPPQuery\ManyTimesDifferentQueriesFPPTestCase.cs" />
+    <Compile Include="Cases\ManyTimesRealQuery\ManyTimesRealQueriesTestCase.cs" />
+    <Compile Include="Cases\ManyTimesSameQueries\ManyTimesSameQueriesFullJoinTestCase.cs" />
+    <Compile Include="Cases\ManyTimesSameQueries\ManyTimesSameQueriesPartialJoinTestCase.cs" />
+    <Compile Include="CreateQueryStrategies\FullJoinCreateQueryStrategy.cs" />
+    <Compile Include="CreateQueryStrategies\ICreateQueryStrategy.cs" />
+    <Compile Include="CreateQueryStrategies\PartiaJoinCreateQueryStrategy.cs" />
+    <Compile Include="Cases\SameQuery\SingleTimeSameQueriesFullJoinTestCase.cs" />
+    <Compile Include="Engines\ElasticSearchEngine.cs" />
+    <Compile Include="Engines\MssqlLikeSearchEngine.cs" />
+    <Compile Include="InfoData\MetaResult.cs" />
+    <Compile Include="Engines\MssqlFullTextSearchEngine.cs" />
+    <Compile Include="InfoData\SearchResult.cs" />
+    <Compile Include="Engines\SphinxSearchEngine.cs" />
+    <Compile Include="ISearchEngine.cs" />
+    <Compile Include="Engines\LuceneSearchEngine.cs" />
+    <Compile Include="Cases\ManyTimesDifferentQueries\ManyTimesDifferentQueriesFullJoinTestCase.cs" />
+    <Compile Include="Cases\ManyTimesDifferentQueries\ManyTimesDifferentQueriesPartialJoinTestCase.cs" />
+    <Compile Include="Cases\ManyTimesDifferentQueries\ManyTimesDifferentQueryTestCase.cs" />
+    <Compile Include="ITestCase.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Cases\ManyTimesSameQueries\ManyTimesSameQueriesTestCase.cs" />
+    <Compile Include="Cases\SameQuery\SingleTimeSameQueriesPartialJoinTestCase.cs" />
+    <Compile Include="Cases\SameQuery\SingleTimeSameQueriesTestCase.cs" />
+    <Compile Include="InfoData\QueryItem.cs" />
+    <Compile Include="InfoData\Result.cs" />
+    <Compile Include="Strategies\IStrategy.cs" />
+    <Compile Include="Strategies\ParallelStrategy.cs" />
+    <Compile Include="Strategies\SerialStrategy.cs" />
+    <Compile Include="InfoData\TextJoin.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
