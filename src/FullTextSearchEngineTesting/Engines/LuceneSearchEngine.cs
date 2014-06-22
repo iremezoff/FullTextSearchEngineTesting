@@ -4,6 +4,7 @@ using System.Linq;
 using FullTextSearchEngineTesting.InfoData;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
+using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
@@ -20,6 +21,11 @@ namespace FullTextSearchEngineTesting.Engines
         {
             _analyzer = new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30);
             _directory = FSDirectory.Open("LuceneIndex");
+            if (!IndexReader.IndexExists(_directory))
+            {
+                var writer = new IndexWriter(_directory, _analyzer, IndexWriter.MaxFieldLength.UNLIMITED);
+            }
+
             _searcher = new IndexSearcher(_directory);
         }
 
