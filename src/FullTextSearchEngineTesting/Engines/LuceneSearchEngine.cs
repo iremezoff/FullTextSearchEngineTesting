@@ -20,7 +20,7 @@ namespace FullTextSearchEngineTesting.Engines
         public LuceneSearchEngine()
         {
             _analyzer = new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30);
-            _directory = FSDirectory.Open("LuceneIndex");
+            _directory = FSDirectory.Open(@"c:\projects\FullTextSearchEngineTesting\Data\LuceneIndex");
             if (!IndexReader.IndexExists(_directory))
             {
                 var writer = new IndexWriter(_directory, _analyzer, IndexWriter.MaxFieldLength.UNLIMITED);

@@ -24,33 +24,30 @@ namespace LuceneIndexCreator
 
             if ("q".Equals(r, StringComparison.InvariantCultureIgnoreCase))
             {
-                AppDomain.Unload(AppDomain.CurrentDomain);
+                return;
             }
 
             Analyzer analyzer = new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30);
-            Directory directory = FSDirectory.Open("LuceneIndex");
+            Directory directory = FSDirectory.Open(@"c:\projects\FullTextSearchEngineTesting\Data\LuceneIndex");
 
             var conn = new SqlConnection(@"Data Source=work\sqlexpress;Initial Catalog=fias;Integrated Security=True");
 
-            if ("s".Equals(r, StringComparison.InvariantCultureIgnoreCase))
+            var sw = new Stopwatch();
+            sw.Start();
+
+            IndexWriter writer = new IndexWriter(directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED);
+
+            foreach (var item in conn.Query<IndexBulkItem>("select aoguid guid, fullname, aolevel level from cache"))
             {
-                var sw = new Stopwatch();
-                sw.Start();
-
-                IndexWriter writer = new IndexWriter(directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED);
-
-                foreach (var item in conn.Query<IndexBulkItem>("select aoguid guid, fullname, aolevel level from cache"))
-                {
-                    Document doc = new Document();
-                    doc.Add(new Field("id", item.Guid.ToString(), Field.Store.YES, Field.Index.NO));
-                    doc.Add(new Field("fullname", item.Fullname.ToString(), Field.Store.YES, Field.Index.ANALYZED));
-                    writer.AddDocument(doc);
-                }
-                writer.Optimize();
-                writer.Close();
-                sw.Stop();
-                Console.WriteLine("Time of indexing: " + sw.ElapsedMilliseconds / 1000m);
+                Document doc = new Document();
+                doc.Add(new Field("id", item.Guid.ToString(), Field.Store.YES, Field.Index.NO));
+                doc.Add(new Field("fullname", item.Fullname.ToString(), Field.Store.YES, Field.Index.ANALYZED));
+                writer.AddDocument(doc);
             }
+            writer.Optimize();
+            writer.Close();
+            sw.Stop();
+            Console.WriteLine("Time of indexing: " + sw.ElapsedMilliseconds / 1000m);
         }
     }
 

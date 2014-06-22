@@ -19,7 +19,7 @@ namespace ElasticSearchIndexCreator
 
             if ("q".Equals(r, StringComparison.InvariantCultureIgnoreCase))
             {
-                AppDomain.Unload(AppDomain.CurrentDomain);
+                return;
             }
 
             var config = new ConnectionSettings(new Uri("http://localhost:9200"));
@@ -28,22 +28,20 @@ namespace ElasticSearchIndexCreator
             var client = new ElasticClient(config);
             var conn = new SqlConnection(@"Data Source=work\sqlexpress;Initial Catalog=fias;Integrated Security=True");
 
-            if ("s".Equals(r, StringComparison.InvariantCultureIgnoreCase))
+            var sw = new Stopwatch();
+            sw.Start();
+
+
+            foreach (var item in conn.Query<IndexBulkItem>("select aoguid guid, fullname, aolevel level from cache"))
             {
-                var sw = new Stopwatch();
-                sw.Start();
+                var response = client.Index<IndexBulkItem>(item, "fias2", "addr");
 
-
-                foreach (var item in conn.Query<IndexBulkItem>("select aoguid guid, fullname, aolevel level from cache"))
-                {
-                    var response = client.Index<IndexBulkItem>(item, "fias2", "addr");
-
-                }
-                client.Refresh("fias2");
-
-                sw.Stop();
-                Console.WriteLine("Time of indexing: " + sw.ElapsedMilliseconds / 1000m);
             }
+            client.Refresh("fias2");
+
+            sw.Stop();
+            Console.WriteLine("Time of indexing: " + sw.ElapsedMilliseconds / 1000m);
+
         }
     }
 
